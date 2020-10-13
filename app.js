@@ -101,7 +101,7 @@ function kindOfEmployee() {
                     })
             } else if (newEmployeeAnswer.kindofTeamMember === "none") {
                 const results = render(employees);
-                fs.writeFile("./rendered/rendered.html", results,
+                fs.writeFile("./Develope/rendered.html", results,
                     function(err) {
                         if (err) throw err;
                         console.log("it worked!")
