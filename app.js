@@ -80,8 +80,36 @@ const newEmployee = [{
     choices: ["Intern", "Engineer", "none"]
 }];
 
+const employees = [];
 
+function kindOfEmployee() {
+    inquirer.prompt(newEmployee)
+        .then(function(newEmployeeAnswer) {
+            if (newEmployeeAnswer.kindofTeamMember === "Engineer") {
+                inquirer.prompt(engineersQuestions)
+                    .then(function(engineerAnswers) {
+                        const engineer = new Engineer(engineerAnswers.engineerName, engineerAnswers.engineerId, engineerAnswers.engineerEmail, engineerAnswers.engineerGithub);
+                        employees.push(engineer)
+                        kindOfEmployee()
+                    })
+            } else if (newEmployeeAnswer.kindofTeamMember === "Intern") {
+                inquirer.prompt(internQuestions)
+                    .then(function(internAnswers) {
+                        const intern = new Intern(internAnswers.internsName, internAnswers.internsId, internAnswers.internsEmail, internAnswers.internsSchool);
+                        employees.push(intern);
+                        kindOfEmployee()
+                    })
+            } else if (newEmployeeAnswer.kindofTeamMember === "none") {
+                const results = render(employees);
+                fs.writeFile("./rendered/rendered.html", results,
+                    function(err) {
+                        if (err) throw err;
+                        console.log("it worked!")
 
+                    })
+            }
+        })
+}
 
 inquirer.prompt(managerQuestions)
     .then(function(managerAnswers) {
