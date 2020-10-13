@@ -79,3 +79,13 @@ const newEmployee = [{
     message: "Which type of team member would you like to add?",
     choices: ["Intern", "Engineer", "none"]
 }];
+
+
+
+
+inquirer.prompt(managerQuestions)
+    .then(function(managerAnswers) {
+        const manager = new Manager(managerAnswers.managersName, managerAnswers.managersId, managerAnswers.managersEmail, managerAnswers.managersOfficeNumber)
+        employees.push(manager)
+        kindOfEmployee();
+    })
