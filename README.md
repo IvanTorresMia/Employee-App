@@ -10,167 +10,82 @@
 * [License](#License)
 
 ## Description 
-Hi! Welcome to my Read me Generator. this app is run through node, and once you run the app through "node index.js" in the integrated terminal you will be prompted with questions about your project. You will then answer accordingly. Fair warning there will be questions about your github so be ready with that informaition. Once you have answered all of the questions the app will then generate a README.md file for you! Yay so much work already done for you. 
+Hi! Welcome to my Employee app. Here you are able to create a set of employees and the first thing you will be presented with after you install the app is a series of questions asking you information about your manager then giving you the option to add interns and or an engineer. Once you have answered the questions the app will render an html file for you! you will have a designed page with cards containing the information you entered about your employees. In the next few sections I will tell you how to install the app. 
 
 
 ## Technologies
 * [JavaScript](https://www.w3schools.com/js/)
 * [Inquirer](https://www.npmjs.com/package/inquirer)
 * [FileSystem](https://nodejs.dev/learn/the-nodejs-fs-module)
+* [Node.js](https://nodejs.org/en/)
+* [Inquirer](https://www.npmjs.com/package/inquirer)
 
 
 ## Features
 ![README-gif](./assets/README-generator.gif)
 
-* So I used inquirer and set it equal to a object array. just to keep the code clean this is how I decided to do it.
+* So After I used inwuire to prompt the user for a manager I called a function that asks what king of employee would they like to make. 
 ```
- const questions = [{
-        type: "input",
-        name: "githubName",
-        message: "What is your github user name"
-    },
-    {
-        type: "input",
-        name: "email",
-        message: "What is your email address"
-    },
-    {
-        type: "input",
-        name: "title",
-        message: "What is the name of your project?"
-    },
-    {
-        type: "input",
-        name: "description",
-        message: "type a description of this project."
-    },
-    {
-        type: "list",
-        name: "license",
-        choices: ["MIT", "APACHE 2.0", "GPL 3.0", "BSD 3", "None"],
-        message: "What license would you like to use?"
-    },
-    {
-        type: "input",
-        name: "installation",
-        message: "what command shouuld be run to install dependencies?"
-    },
-    {
-
-        type: "input",
-        name: "tests",
-        message: "what command shouuld be run to tests?"
-
-    },
-    {
-        type: "input",
-        name: "usage",
-        message: "what does the user need to know about using this repo?"
-    },
-    {
-        type: "input",
-        name: "contributer",
-        message: "what does the user neet to know about contributing to the repo?"
-    }
-];
+ inquirer.prompt(managerQuestions)
+    .then(function(managerAnswers) {
+        const manager = new Manager(managerAnswers.managersName, managerAnswers.managersId, managerAnswers.managersEmail, managerAnswers.managersOfficeNumber)
+        employees.push(manager)
+        kindOfEmployee();
+    })
   ```
 
 
-* Here is the function with all the meat in it. Here I made a function that writes to the read me by first passing the questions into the inquier. Then there is an if an else statement that genereates a badge depending on what the user chose for a licence. Last but not least the fs.writefile, writes to the file and the genereated README followed by a console.log letting you know that "it worked!"
+* Here is the function I call to ask the user what kind of employee they would like to make. Depending on their answer it will prompt them for either a intern or an engineew and push an new employee to an array. in the case that they say "none" then the app writes a new html file with the new employees.
 
 ```
-function writeToFile() {
-    inquirer.prompt(questions)
-        .then(
-            function(answers) {
-                if (answers.license == "MIT") {
-                    answers.license = "[![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE)"
-                } else if (answers.license == "APACHE 2.0") {
-                    answers.license = "[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)"
-                } else if (answers.license == "GPL 3.0") {
-                    answers.license = "[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)"
-                } else if (answers.license == "BSD 3") {
-                    answers.license = "[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)"
-                } else {
-                    answers.license = "None"
-                }
-                fs.writeFile("README.md", template(answers),
-                    function(err, data) {
+const employees = [];
+
+function kindOfEmployee() {
+    inquirer.prompt(newEmployee)
+        .then(function(newEmployeeAnswer) {
+            if (newEmployeeAnswer.kindofTeamMember === "Engineer") {
+                inquirer.prompt(engineersQuestions)
+                    .then(function(engineerAnswers) {
+                        const engineer = new Engineer(engineerAnswers.engineerName, engineerAnswers.engineerId, engineerAnswers.engineerEmail, engineerAnswers.engineerGithub);
+                        employees.push(engineer)
+                        kindOfEmployee()
+                    })
+            } else if (newEmployeeAnswer.kindofTeamMember === "Intern") {
+                inquirer.prompt(internQuestions)
+                    .then(function(internAnswers) {
+                        const intern = new Intern(internAnswers.internsName, internAnswers.internsId, internAnswers.internsEmail, internAnswers.internsSchool);
+                        employees.push(intern);
+                        kindOfEmployee()
+                    })
+            } else if (newEmployeeAnswer.kindofTeamMember === "none") {
+                const results = render(employees);
+                fs.writeFile("./Develope/rendered.html", results,
+                    function(err) {
                         if (err) throw err;
                         console.log("it worked!")
+
                     })
             }
-        )
+        })
 }
-
-
-writeToFile();
 ```
 
 
-* Here is my template that I made for my read me. I used template literals to write to it. By the way I love template literals. genreating a great READ ME. I used a different js file to keep it clean. and used module.exports to require it on index.js.
 
-```
-function generateMarkdown(data) {
-    return `
-  # ${data.title}
-
-  ## Table of contents
-* [Description](#Description)
-* [Installation](#Installation)
-* [Tests](#Tests)
-* [Usage](#Usage)
-* [Contributors](#Contributors)
-* [License](#License)
-
-  ## Description 
-  ${data.description}
-
-  ## Installation
-  To start you must install 
-
-\`\`\`
-  ${data.installation} 
-\`\`\`
-
-
-  ## Tests
-  If you want to run tests you need to use 
-
-  \`\`\`
-  ${data.tests} 
-\`\`\`
-
-
-  #Usage
-  ${data.usage} 
- 
-
-  ## Contributions
-  ${data.contributer}
-
-  ## License 
-  ${data.license}
-
-  ## Questions?
-  Reach me at ${data.email}
-  My Github picture
-  
-  ![picture](https://github.com/${data.githubName}.png?size=100)
-
-`;
-}
-
-module.exports = generateMarkdown;
-```
 ## Usage
 [Usage-Video](https://drive.google.com/file/d/1HKjmV8m81vzhIJULUy3zQQgYiuAUOsfb/view)
 
 
 ## Installation
-First thing you have to do is install node. Then you run npm init -y to create a package.json. Then yo install inquirer and run npm i. Once you are at that point you can now run index.js to begin creating your README.ms file. 
-optional: you can install jest and run "npm run test" for testing.
+In order to run this app you have to install inquirer using 
+```
+mpi install inquirer
+```
+Then You intall "fs'
 
+```
+npm install fs
+```
 
 
 ## Author
