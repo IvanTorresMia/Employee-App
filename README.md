@@ -1,4 +1,4 @@
-# Employee-App# ReadMe Generator
+# Employee-App
 
 
 ## Table of Contents
@@ -22,7 +22,7 @@ Hi! Welcome to my Employee app. Here you are able to create a set of employees a
 
 
 ## Features
-![README-gif](./assets/README-generator.gif)
+![Employee-gif](./assets/Employee-app-gif.gif2.gif)
 
 * So After I used inwuire to prompt the user for a manager I called a function that asks what king of employee would they like to make. 
 ```
@@ -73,7 +73,7 @@ function kindOfEmployee() {
 
 
 ## Usage
-[Usage-Video](https://drive.google.com/file/d/1HKjmV8m81vzhIJULUy3zQQgYiuAUOsfb/view)
+[Usage-Video](https://drive.google.com/file/d/1LGy1IfXMMrCYD3GC1WQpJG-t-X_o8UCy/view)
 
 
 ## Installation
@@ -87,6 +87,10 @@ Then You intall "fs'
 npm install fs
 ```
 
+then to run you type 
+```
+node app.js
+```
 
 ## Author
 Ivan Torres

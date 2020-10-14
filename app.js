@@ -18,7 +18,11 @@ const managerQuestions = [{
     {
         type: "input",
         name: "managersId",
-        message: "What is your managers Id?"
+        message: "What is your managers Id?",
+        validate: function(value) {
+            var valid = !isNaN(parseFloat(value));
+            return valid || 'Please enter a number';
+        }
     },
     {
         type: "input",
@@ -28,7 +32,11 @@ const managerQuestions = [{
     {
         type: "input",
         name: "managersOfficeNumber",
-        message: "What is your managers Office Number"
+        message: "What is your managers Office Number",
+        validate: function(value) {
+            var valid = !isNaN(parseFloat(value));
+            return valid || 'Please enter a number';
+        }
     }
 ];
 const internQuestions = [{
@@ -39,7 +47,11 @@ const internQuestions = [{
     {
         type: "input",
         name: "internsId",
-        message: "What is your interns Id?"
+        message: "What is your interns Id?",
+        validate: function(value) {
+            var valid = !isNaN(parseFloat(value));
+            return valid || 'Please enter a number';
+        }
     },
     {
         type: "input",
@@ -49,7 +61,7 @@ const internQuestions = [{
     {
         type: "input",
         name: "internsSchool",
-        message: "What is your interns Office Number"
+        message: "What is your interns School"
     }
 ]
 const engineersQuestions = [{
@@ -60,7 +72,11 @@ const engineersQuestions = [{
     {
         type: "input",
         name: "engineerId",
-        message: "What is your engineer's Id?"
+        message: "What is your engineer's Id?",
+        validate: function(value) {
+            var valid = !isNaN(parseFloat(value));
+            return valid || 'Please enter a number';
+        }
     },
     {
         type: "input",
